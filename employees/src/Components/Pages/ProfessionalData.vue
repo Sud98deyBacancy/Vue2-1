@@ -1,37 +1,44 @@
 <template>
-   
-    <form>
-      <center>
-      <h2> Professional DataForm </h2>
+  <form @submit.prevent="AddEmployee">  
+    <h2> Professional DataForm </h2>
       <div class="form-control">
         <label for="designation">Designation</label>
-        <input id="desg" name="desg" type="text"  />
+        <input id="desg" name="desg" type="text" v-model="desg" />
       </div>
       <div class="form-control">
-        <label for="Job description">Office Address </label>
-        <textarea id="description" name="description" rows="3" ></textarea>
+        <label for="Job description">Job description </label>
+        <textarea id="description" name="description" rows="3" v-model="desc" ></textarea>
       </div>
       <div class="form-control">
         <label for="Salary">Salary</label>
-        <input id="Salary" name="salary" type="number"/>
+        <input id="Salary" name="salary" type="number" v-model="sal"/>
       </div>
       <div class="form-control">
         <b>Department</b><br>
-       <select>
+       <select name="Department" id="Department" v-model="dept">
          <option> IT </option> 
          <option> Finance </option> <option> HR </option>
          <option> Marketing </option> <option> Service </option>
        </select>
       </div>
       <div>
-        <button type="submit">Submit</button>
+        <button>Submit</button>
       </div>
-      </center>     
-    </form>
-  
+  </form>
 </template>
-
 <script>
+export default {
+inject:['Professional'],
+data(){
+  return{desg:'',desc:'',dept:'',sal:''};
+},
+methods:{
+  AddEmployee(){
+    this.Professional(this.desg,this.desc,this.dept,this.sal);
+  }
+}  
+
+}
 </script>
 
 <style scoped>

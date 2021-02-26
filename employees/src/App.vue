@@ -18,10 +18,44 @@ import ShowData from './Components/Pages/ShowData.vue';
 export default{
   components:{PersonalData,ProfessionalData,ShowData},
   data(){
-    return { PageLoad:''};
+    return { 
+      PageLoad:'',
+      tempDetails:{
+        id:'',name:'',email:'',phone:'',
+        address:'',gender:'',desg:'',
+        desc:'',dept:'',sal:''},
+      storedDetails:[{
+        id:'Emp1',name:'dummy',email:'dommy@yahoo.in',phone:'7722635333',
+        address:'House No,Society Name,Sub Area,Locality,Area,Lorem Ipsum',
+        gender:'Female',desc:'NAN',desg:'NAN',dept:'NAN',sal:0},
+        {
+        id:'Emp2',name:'sudarshan',email:'sudarshan@gmail.com',phone:'7575062408',
+        address:'House No,Society Name,Locality,Landmark,SubArea,Area,City',
+        gender:'Male',desg:'Software Eng.',
+        dept:'IT',desc:'Intern at Bacancy',sal:22222
+      }] };
   },
   methods:{
-    setComponent(value){this.PageLoad=value;}
+    setComponent(value){this.PageLoad=value;},
+    setPersonalDetails(id,name,email,phone,addr,gender)
+    {
+       this.tempDetails.id=id; 
+       this.tempDetails.name=name;this.tempDetails.email=email;
+       this.tempDetails.phone=phone; this.tempDetails.address=addr;
+       this.tempDetails.gender=gender;
+    },
+    setProfDetails(desg,desc,dept,sal)
+    {
+      this.tempDetails.desg=desg; this.tempDetails.desc=desc;
+      this.tempDetails.dept=dept;this.tempDetails.sal=sal;
+      console.log(this.tempDetails);
+      this.storedDetails.push(this.tempDetails);
+      }
+  },
+  provide(){
+    return { Contact:this.setPersonalDetails,
+             Professional:this.setProfDetails,
+             employees:this.storedDetails}
   }
 }
 </script>
