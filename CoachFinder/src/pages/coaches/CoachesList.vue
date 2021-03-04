@@ -1,11 +1,16 @@
 <template>
+<body>
+  <base-dialog :show="!!error" title="An error occurred!" @close="handleError">
+      <p>{{ error }}</p>
+    </base-dialog>
 <coach-filter @change-filter="setFilters">
   <!-- Listing to the change-filter event -->
   </coach-filter>    
     <base-card>
         <div class="controls">
-        <base-button mode="outline"> Refresh </base-button> 
-        <base-button link to="/register" mode="outline"> Register As Coach</base-button>
+        <base-button mode="outline" @click="loadCoaches"> Refresh </base-button> 
+        <base-button link to="/register" mode="outline" v-if="isLoggedIn"> Register As Coach</base-button>
+        <base-button link to="/auth" v-if="!isLoggedIn"> LogIn</base-button>  
         </div> 
         List Of Coaches
         <ul v-if="hasCoaches">
@@ -15,8 +20,8 @@
      </coach-item>
     </ul>
     <h3 v-else>No coaches found.</h3>
-  
-    </base-card>
+  </base-card>
+  </body>
 </template>
 <script>
 import CoachItem from './CoachItem.vue';
@@ -24,9 +29,10 @@ import CoachFilter from './CoachFilter.vue';
 export default {
     components:{CoachItem,CoachFilter},
     data(){
-      return { activefilters:{ frontend:true,backend:true,career:true}};
+      return { activefilters:{ frontend:true,backend:true,career:true},error:null};
     },
     computed:{
+         isLoggedIn(){ return this.$store.getters.isAuthenticated; },
         filteredCoaches(){ //Loading data on basis of filters set by user
           const coaches=this.$store.getters['coaches/coaches'];
           return coaches.filter(coach => {
@@ -41,9 +47,15 @@ export default {
           },
         hasCoaches() {return this.$store.getters['coaches/hasCoaches'];}
     },
+    created(){ this.loadCoaches(); },
     methods:{
       setFilters(updatedFilters){//Listening to change-filter event 
-        this.activefilters = updatedFilters; }
+        this.activefilters = updatedFilters; },
+      loadCoaches(){
+        try {this.$store.dispatch('coaches/loadCoach');}
+        catch(err){this.error = err.message || 'Something went wrong!!';}
+        },
+        handleError(){ this.error =null;}
     }
 }
 </script>

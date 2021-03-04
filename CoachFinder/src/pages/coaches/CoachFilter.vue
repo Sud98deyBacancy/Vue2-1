@@ -1,4 +1,5 @@
 <template>
+<section>
     <base-card>
     <h2> Filter Coaches </h2>
     <span class="filter-option">
@@ -14,6 +15,7 @@
         <label for="career">Career</label>
     </span>
     </base-card>
+</section>
 </template>
 <script>
 export default {

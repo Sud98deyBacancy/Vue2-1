@@ -1,5 +1,5 @@
 <template>
-    <form>
+    <form @submit.prevent="submitForm">
     <div class="form-control">
     <label for="email"> Your Email</label>
     <input type="email" name="email" v-model.trim="email"/>
@@ -27,7 +27,7 @@ data(){
        if(this.email === '' || !this.email.includes('@') || this.message === '')
        { this.formIsValid=false; return ;}
        this.$store.dispatch('request/contactCoach',{
-         email:this.email,message:this.message,coachId:this.$route.id   
+         email:this.email,message:this.message,coachId:this.$route.params.id   
        }); 
        this.$router.push('/coaches');
    }

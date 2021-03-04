@@ -1,4 +1,5 @@
 <template>
+ <div>
   <base-card>
     <h2>Register as a Coach now...</h2>
     <form @submit.prevent="submitForm">
@@ -50,6 +51,7 @@
       <base-button> Register </base-button>
     </form>
   </base-card>
+ </div>
 </template>
 <script>
 export default {
