@@ -29,24 +29,25 @@ export default{
     actions:{ //Implemeting the mutation
      
       async registerCoach(context,data){
-        const userId = context.rootGetters.userId;
+        const coachId = context.rootGetters.userId;
         const coachData={
          firstName:data.first,lastName:data.last,
          hourlyRate:data.rate,description:data.desc,
          areas:data.areas
        };
-       const token = context.rootGetters.getToken;
-     const response=await fetch(`https://vuefirebase-9abe3-default-rtdb.europe-west1.firebasedatabase.app/coaches/${userId}.json?auth=` + token,{
-        method:'POST',body:JSON.stringify(coachData)
+       
+     const response=await fetch(`https://vuefirebase-9abe3-default-rtdb.europe-west1.firebasedatabase.app/coaches/${coachId}.json`,{
+        method:'PUT',body:JSON.stringify(coachData)
        });
      //  const responseData = await response.json();
        if(!response.ok){ //error...
       }
        context.commit('registerCoach',{
-         ...coachData,id:userId
+         ...coachData,id:coachId
        });
      },
     async loadCoach(context){
+      //const userId = context.rootGetters.userId;
       const response= await fetch(`https://vuefirebase-9abe3-default-rtdb.europe-west1.firebasedatabase.app/coaches.json`);
       const responseData = await response.json();
       if(!response.ok){ /** error.... */

@@ -9,8 +9,8 @@
     <base-card>
         <div class="controls">
         <base-button mode="outline" @click="loadCoaches"> Refresh </base-button> 
-        <base-button link to="/register" mode="outline" v-if="isLoggedIn"> Register As Coach</base-button>
-        <base-button link to="/auth" v-if="!isLoggedIn"> LogIn</base-button>  
+        <base-button link to="/register" mode="outline" > Register As Coach</base-button>
+        
         </div> 
         List Of Coaches
         <ul v-if="hasCoaches">
@@ -32,11 +32,11 @@ export default {
       return { activefilters:{ frontend:true,backend:true,career:true},error:null};
     },
     computed:{
-         isLoggedIn(){ return this.$store.getters.isAuthenticated; },
+        
         filteredCoaches(){ //Loading data on basis of filters set by user
           const coaches=this.$store.getters['coaches/coaches'];
           return coaches.filter(coach => {
-            if(this.activefilters.frontend && coach.areas.includes('frontend'))
+            if(this.activefilters.frontend)
             { return true; }
             if(this.activefilters.backend && coach.areas.includes('backend'))
             { return true; }

@@ -14,7 +14,8 @@ export default{
     const newRequest={
        userEmail:payload.email,message:payload.message
     };
-   const response = await fetch(`https://vuefirebase-9abe3-default-rtdb.europe-west1.firebasedatabase.app/requests/${payload.coachId}.json`,{
+    const coachId = context.rootGetters.userId;
+    const response = await fetch(`https://vuefirebase-9abe3-default-rtdb.europe-west1.firebasedatabase.app/requests/${coachId}.json`,{
       method:'POST',body:JSON.stringify(newRequest)//Insertion of Data
     });
     var responseData = await response.json();
@@ -27,9 +28,8 @@ export default{
   },
  async fetchRequests(context){
    const coachId = context.rootGetters.userId;
-   const token = context.rootGetters.getToken;
-   //Data retreiving from fireBase
-  const response= await fetch(`https://vuefirebase-9abe3-default-rtdb.europe-west1.firebasedatabase.app/requests/${coachId}.json?auth=`+ token);
+    //Data retreiving from fireBase
+  const response= await fetch(`https://vuefirebase-9abe3-default-rtdb.europe-west1.firebasedatabase.app/requests/${coachId}.json`);
   const responseData = await response.json();
   if(!response.ok){ 
     const error = new Error(responseData.message || 'Failed to load Data');
