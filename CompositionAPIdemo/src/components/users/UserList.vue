@@ -20,44 +20,29 @@
 
 <script>
 import UserItem from './UserItem.vue';
-import { ref,computed,watch } from 'vue';
+import { ref,computed,toRefs} from 'vue';
+import useSearch from '../../hooks/search.js';
 export default {
-  components: {
-    UserItem,
-  },
+  components: {UserItem},
   props: ['users'],
   emits:['list-projects'],
   setup(props){
-    const enteredSearchTerm=ref('');
-    const activeSearchTerm=ref(''); 
-    const availableUsers=computed(function(){
-      let users = [];
-      if (activeSearchTerm.value) {
-      users = props.users.filter((usr) =>
-      usr.fullName.includes(activeSearchTerm.value));
-      } 
-      else if (props.users) {users = props.users;} 
-      return users;
-    });
-    const sorting=ref(null);
-    const displayedUsers=computed(function(){
-      if (!sorting.value) {return availableUsers.value;}
-      return availableUsers.value.slice().sort((u1, u2) => {
+    
+    const { users } = toRefs(props);
+const {availableItems,enteredSearchTerm,updateSearch }= useSearch(users,'fullName');
+  const sorting=ref(null);
+  const displayedUsers=computed(function(){
+      if (!sorting.value) {return availableItems.value;}
+      else {
+      return availableItems.value.slice().sort((u1, u2) => {
         if (sorting.value === 'asc' && u1.fullName > u2.fullName) {return 1;} 
         else if (sorting.value === 'asc') { return -1;} 
         else if (sorting.value === 'desc' && u1.fullName > u2.fullName) {return -1;} 
         else { return 1;}
-      });
+      }); }
   });
-    watch(enteredSearchTerm,function(newValue){
-     setTimeout(() => {
-        if (newValue === enteredSearchTerm.value) 
-        {  activeSearchTerm.value = newValue;}
-      }, 2000);
-    });
-    function updateSearch(val) {enteredSearchTerm.value=val;} 
-    function sort(mode) { sorting.value=mode;}
-    return { enteredSearchTerm,availableUsers,sorting,displayedUsers,updateSearch,sort};
+  function sort(mode) { sorting.value=mode;}
+    return { enteredSearchTerm,sorting,displayedUsers,updateSearch,sort};
 }
 };
 </script>
